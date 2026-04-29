@@ -82,7 +82,7 @@ const AssessmentPage = () => {
 
     try {
       const answersString = questions.map(q => `${q.question}: ${answers[q.id]}`).join('\n');
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://recovery-ai-tper.onrender.com';
       const response = await axios.post(`${apiUrl}/api/assessment/submit`, 
         { answers: answersString },
         { headers: { Authorization: `Bearer ${token}` } }

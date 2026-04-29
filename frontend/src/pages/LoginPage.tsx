@@ -19,7 +19,7 @@ const LoginPage = () => {
     setError('');
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://recovery-ai-tper.onrender.com';
       const response = await axios.post(`${apiUrl}/api/auth/signin`, {
         email,
         password

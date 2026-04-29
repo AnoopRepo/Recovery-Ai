@@ -74,7 +74,11 @@ public class WebSecurityConfig {
         if (allowedOrigins != null && !allowedOrigins.isEmpty()) {
             configuration.setAllowedOrigins(Arrays.asList(allowedOrigins.split(",")));
         } else {
-            configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174"));
+            configuration.setAllowedOrigins(List.of(
+                "http://localhost:5173", 
+                "http://localhost:5174", 
+                "https://recovery-ai-blond.vercel.app"
+            ));
         }
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
