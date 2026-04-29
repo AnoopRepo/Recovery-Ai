@@ -19,7 +19,8 @@ const LoginPage = () => {
     setError('');
 
     try {
-      const response = await axios.post('http://localhost:8080/api/auth/signin', {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+      const response = await axios.post(`${apiUrl}/api/auth/signin`, {
         email,
         password
       });

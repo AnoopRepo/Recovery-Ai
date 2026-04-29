@@ -82,7 +82,8 @@ const AssessmentPage = () => {
 
     try {
       const answersString = questions.map(q => `${q.question}: ${answers[q.id]}`).join('\n');
-      const response = await axios.post('http://localhost:8080/api/assessment/submit', 
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+      const response = await axios.post(`${apiUrl}/api/assessment/submit`, 
         { answers: answersString },
         { headers: { Authorization: `Bearer ${token}` } }
       );
