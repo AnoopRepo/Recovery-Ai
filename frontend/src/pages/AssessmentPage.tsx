@@ -7,50 +7,86 @@ import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
-const questions = [
-  {
-    id: 1,
-    question: "How often do you feel physically exhausted after a day of work?",
-    options: ["Never", "Rarely", "Sometimes", "Often", "Always"]
-  },
-  {
-    id: 2,
-    question: "Do you feel emotionally drained by your tasks and responsibilities?",
-    options: ["Never", "Rarely", "Sometimes", "Often", "Always"]
-  },
-  {
-    id: 3,
-    question: "How often do you find yourself reacting with irritability towards colleagues or digital interactions?",
-    options: ["Never", "Rarely", "Sometimes", "Often", "Always"]
-  },
-  {
-    id: 4,
-    question: "Do you feel like your productivity and quality of work have significantly declined?",
-    options: ["Never", "Rarely", "Sometimes", "Often", "Always"]
-  },
-  {
-    id: 5,
-    question: "How often do you feel that your work is not meaningful or lacks purpose?",
-    options: ["Never", "Rarely", "Sometimes", "Often", "Always"]
-  },
-  {
-    id: 6,
-    question: "Do you have trouble disconnecting from work and digital devices after hours?",
-    options: ["Never", "Rarely", "Sometimes", "Often", "Always"]
-  },
-  {
-    id: 7,
-    question: "How often do you feel overwhelmed by your digital notifications (emails, Slack, messages)?",
-    options: ["Never", "Rarely", "Sometimes", "Often", "Always"]
-  },
-  {
-    id: 8,
-    question: "Do you feel like you are 'always on' and can never truly rest?",
-    options: ["Never", "Rarely", "Sometimes", "Often", "Always"]
-  }
-];
+const professionQuestions: Record<string, { id: number, question: string, options: string[] }[]> = {
+  'Student': [
+    { id: 1, question: "How often do you feel overwhelmed by your academic workload?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 2, question: "Do you struggle to focus on studying due to digital distractions?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 3, question: "How often do you feel anxious about upcoming exams or assignments?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 4, question: "Do you feel like your social life is entirely dependent on social media?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 5, question: "How often do you sacrifice sleep to finish your studies?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 6, question: "Do you feel a lack of motivation toward your chosen field of study?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 7, question: "How often do you compare your academic progress with others online?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 8, question: "Do you experience physical symptoms like headaches or eye strain from long study sessions?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 9, question: "How often do you feel that your academic efforts go unrecognized?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 10, question: "Do you feel constant pressure to be 'productive' every hour of the day?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] }
+  ],
+  'Software Engineer': [
+    { id: 1, question: "How often do you feel 'stuck' or mentally blocked on a coding problem?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 2, question: "Do you find it difficult to stop thinking about code after work hours?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 3, question: "How often do you feel overwhelmed by the rapid pace of technological change?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 4, question: "Do you experience 'Imposter Syndrome' regarding your technical skills?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 5, question: "How often do you feel drained by long meetings or 'sprint' deadlines?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 6, question: "Do you find yourself working through lunch or breaks consistently?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 7, question: "How often do you feel a lack of creative control over your projects?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 8, question: "Do you struggle with physical issues like back pain or carpal tunnel?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 9, question: "How often do you feel isolated while working remotely or in a silo?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 10, question: "Do you feel that your work-life balance is being compromised by 'on-call' duties?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] }
+  ],
+  'Healthcare Worker': [
+    { id: 1, question: "How often do you feel emotionally exhausted by patient care?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 2, question: "Do you experience 'compassion fatigue' or feel less empathetic than usual?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 3, question: "How often do you feel overwhelmed by the administrative part of healthcare?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 4, question: "Do you find it hard to 'switch off' from work-related trauma at home?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 5, question: "How often do you feel that you don't have enough time for each patient?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 6, question: "Do you feel physically unsafe or highly stressed in your work environment?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 7, question: "How often do you worry about making a clinical error due to fatigue?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 8, question: "Do you struggle with irregular shift patterns affecting your sleep?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 9, question: "How often do you feel that your mental health is secondary to your job?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 10, question: "Do you feel supported by your institution's leadership?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] }
+  ],
+  'Corporate Employee': [
+    { id: 1, question: "How often do you feel that your daily tasks are repetitive or mundane?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 2, question: "Do you feel pressured to respond to emails/messages instantly?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 3, question: "How often do you feel that your work goals are unrealistic?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 4, question: "Do you find office politics or corporate hierarchy stressful?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 5, question: "How often do you feel your personal values conflict with company goals?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 6, question: "Do you experience a lack of growth or learning opportunities?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 7, question: "How often do you feel micromanaged by your superiors?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 8, question: "Do you feel that your contributions are undervalued in the company?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 9, question: "How often do you feel anxious about job security?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 10, question: "Do you struggle to maintain a healthy diet or exercise due to long hours?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] }
+  ],
+  'Entrepreneur': [
+    { id: 1, question: "How often do you feel the full weight of business responsibility on your shoulders?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 2, question: "Do you find it impossible to take a true day off without checking work?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 3, question: "How often do you feel anxious about cash flow or financial stability?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 4, question: "Do you struggle with the isolation of making all major decisions alone?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 5, question: "How often do you feel that your identity is too tied to your business success?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 6, question: "Do you find yourself working late into the night consistently?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 7, question: "How often do you feel overwhelmed by the need to 'wear many hats'?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 8, question: "Do you experience physical symptoms of stress related to business risks?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 9, question: "How often do you feel that you are neglecting personal relationships for work?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 10, question: "Do you feel that the 'hustle culture' is negatively impacting your health?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] }
+  ],
+  'Other': [
+    { id: 1, question: "How often do you feel physically exhausted after a day of work?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 2, question: "Do you feel emotionally drained by your tasks and responsibilities?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 3, question: "How often do you find yourself reacting with irritability?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 4, question: "Do you feel like your productivity and quality of work have declined?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 5, question: "How often do you feel that your work is not meaningful?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 6, question: "Do you have trouble disconnecting from work and digital devices?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 7, question: "How often do you feel overwhelmed by digital notifications?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 8, question: "Do you feel like you are 'always on' and can never truly rest?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 9, question: "How often do you experience physical stress (headaches, muscle tension)?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { id: 10, question: "Do you feel a lack of support in your professional life?", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] }
+  ]
+};
 
 const AssessmentPage = () => {
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const userProfession = user.profession || 'Other';
+  const questions = professionQuestions[userProfession] || professionQuestions['Other'];
+
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -81,7 +117,8 @@ const AssessmentPage = () => {
     }
 
     try {
-      const answersString = questions.map(q => `${q.question}: ${answers[q.id]}`).join('\n');
+      const userContext = `User Name: ${user.name || 'User'}\nProfession: ${userProfession}\n\n`;
+      const answersString = userContext + questions.map(q => `${q.question}: ${answers[q.id]}`).join('\n');
       const apiUrl = import.meta.env.VITE_API_URL || 'https://recovery-ai-tper.onrender.com';
       const response = await axios.post(`${apiUrl}/api/assessment/submit`, 
         { answers: answersString },

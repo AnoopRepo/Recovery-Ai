@@ -46,6 +46,8 @@ public class AuthController {
         response.put("token", jwt);
         response.put("id", userDetails.getId());
         response.put("email", userDetails.getEmail());
+        response.put("profession", userDetails.getProfession());
+        response.put("name", userDetails.getUsername());
 
         return ResponseEntity.ok(response);
     }
@@ -64,10 +66,15 @@ public class AuthController {
                 .name(signUpRequest.get("name"))
                 .email(signUpRequest.get("email"))
                 .password(encoder.encode(signUpRequest.get("password")))
+                .profession(signUpRequest.get("profession"))
                 .build();
 
         userRepository.save(user);
 
         return ResponseEntity.ok("User registered successfully!");
+    }
+    @GetMapping("/users")
+    public ResponseEntity<?> getAllUsers() {
+        return ResponseEntity.ok(userRepository.findAll());
     }
 }

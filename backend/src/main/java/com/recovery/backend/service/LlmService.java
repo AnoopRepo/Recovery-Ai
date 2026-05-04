@@ -64,7 +64,7 @@ public class LlmService {
                 message.put("content", prompt);
 
                 Map<String, Object> requestBody = new HashMap<>();
-                requestBody.put("model", "grok-beta");
+                requestBody.put("model", "grok-2-1212");
                 requestBody.put("messages", List.of(message));
                 requestBody.put("temperature", 0.7);
 
@@ -153,8 +153,24 @@ public class LlmService {
             }
         }
 
-        System.err.println("[LLM] All models and retries exhausted.");
-        return "⏳ The AI service is currently at capacity. Please wait 1-2 minutes and try submitting again.";
+        System.err.println("[LLM] All models and retries exhausted. Returning Demo Fallback.");
+        return "# Mental Health Recovery Report (Demo Mode)\n\n" +
+               "## Burnout Severity Score\n" +
+               "Score: 65/100 | Status: Moderate Burnout\n" +
+               "Based on your answers, you are experiencing significant digital fatigue and high stress levels. Your focus and energy are being drained by over-engagement with digital platforms.\n\n" +
+               "## Key Findings\n" +
+               "* **High Cortisol Levels:** Constant notifications are keeping your body in a 'fight or flight' state.\n" +
+               "* **Sleep Disruption:** Blue light exposure before bed is affecting your REM cycle.\n" +
+               "* **Cognitive Overload:** Frequent task-switching is reducing your deep-work capacity.\n\n" +
+               "## Your 30-Day Recovery Roadmap\n" +
+               "**Week 1 – Immediate Reset:** Implement a 'Digital Sunset' (no screens 90 mins before bed). Start each day with 10 minutes of box breathing.\n" +
+               "**Week 2-4 – Habit Rebuilding:** Batch check emails/messages only 3 times a day. Replace one hour of scrolling with a physical activity or reading.\n\n" +
+               "## Specific Recommendations\n" +
+               "* **Grey-scale Mode:** Turn your phone screen to black & white to reduce dopamine triggers.\n" +
+               "* **Forest App:** Use gamified focus tools to keep you off your phone.\n" +
+               "* **Nature Walks:** Spend 20 minutes daily in a green space without any devices.\n\n" +
+               "## Encouragement\n" +
+               "You have already taken the hardest step by acknowledging the burnout. This roadmap is a journey, not a race. Be patient with yourself, and you will see your energy and joy return!";
     }
 
     private String extractTextFromResponse(Map<String, Object> body) {

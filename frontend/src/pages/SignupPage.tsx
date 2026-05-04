@@ -10,6 +10,7 @@ const SignupPage = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [profession, setProfession] = useState('Other');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -24,7 +25,8 @@ const SignupPage = () => {
       await axios.post(`${apiUrl}/api/auth/signup`, {
         name,
         email,
-        password
+        password,
+        profession
       });
       // After successful signup, redirect to login
       navigate('/login');
@@ -34,6 +36,17 @@ const SignupPage = () => {
       setLoading(false);
     }
   };
+
+  const professions = [
+    'Student',
+    'Software Engineer',
+    'Healthcare Worker',
+    'Corporate Employee',
+    'Entrepreneur',
+    'Creative Professional',
+    'Educator',
+    'Other'
+  ];
 
   return (
     <div className="font-sans bg-[var(--color-warm-white)] text-[var(--color-charcoal)] min-h-screen flex flex-col">
@@ -85,6 +98,23 @@ const SignupPage = () => {
                 required
                 className="w-full bg-[var(--color-warm-white)] border-2 border-[var(--color-cream)] p-4 pl-12 rounded-2xl outline-none focus:border-[var(--color-sage)] transition-all" 
               />
+            </div>
+
+            <div className="relative">
+              <select 
+                value={profession}
+                onChange={(e) => setProfession(e.target.value)}
+                required
+                className="w-full bg-[var(--color-warm-white)] border-2 border-[var(--color-cream)] p-4 rounded-2xl outline-none focus:border-[var(--color-sage)] transition-all appearance-none cursor-pointer"
+              >
+                <option value="" disabled>Select Profession</option>
+                {professions.map(p => (
+                  <option key={p} value={p}>{p}</option>
+                ))}
+              </select>
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                <ArrowRight size={16} className="rotate-90 text-[var(--color-muted)]" />
+              </div>
             </div>
 
             {error && <p className="text-red-500 text-sm font-medium text-center">{error}</p>}

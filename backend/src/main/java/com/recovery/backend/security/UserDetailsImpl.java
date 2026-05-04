@@ -13,15 +13,17 @@ public class UserDetailsImpl implements UserDetails {
     private String id;
     private String username;
     private String email;
+    private String profession;
 
     @JsonIgnore
     private String password;
 
-    public UserDetailsImpl(String id, String username, String email, String password) {
+    public UserDetailsImpl(String id, String username, String email, String password, String profession) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.profession = profession;
     }
 
     public static UserDetailsImpl build(User user) {
@@ -29,11 +31,13 @@ public class UserDetailsImpl implements UserDetails {
                 user.getId(),
                 user.getName(),
                 user.getEmail(),
-                user.getPassword());
+                user.getPassword(),
+                user.getProfession());
     }
 
     public String getId() { return id; }
     public String getEmail() { return email; }
+    public String getProfession() { return profession; }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

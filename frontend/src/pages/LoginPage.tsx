@@ -25,7 +25,12 @@ const LoginPage = () => {
         password
       });
       localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify({ email: response.data.email, id: response.data.id }));
+      localStorage.setItem('user', JSON.stringify({ 
+        email: response.data.email, 
+        id: response.data.id,
+        name: response.data.name,
+        profession: response.data.profession 
+      }));
       navigate('/assessment');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Invalid email or password');
