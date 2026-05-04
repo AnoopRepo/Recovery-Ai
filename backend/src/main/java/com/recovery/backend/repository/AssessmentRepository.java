@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface AssessmentRepository extends MongoRepository<Assessment, String> {
     List<Assessment> findByUserId(String userId);
+    void deleteByUserId(String userId);
 }

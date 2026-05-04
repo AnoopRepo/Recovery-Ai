@@ -1,6 +1,7 @@
 package com.recovery.backend.controller;
 
 import com.recovery.backend.model.User;
+import com.recovery.backend.repository.AssessmentRepository;
 import com.recovery.backend.repository.UserRepository;
 import com.recovery.backend.security.JwtUtils;
 import com.recovery.backend.security.UserDetailsImpl;
@@ -25,6 +26,9 @@ public class AuthController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    AssessmentRepository assessmentRepository;
 
     @Autowired
     PasswordEncoder encoder;
@@ -76,5 +80,12 @@ public class AuthController {
     @GetMapping("/users")
     public ResponseEntity<?> getAllUsers() {
         return ResponseEntity.ok(userRepository.findAll());
+    }
+
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable String id) {
+        userRepository.deleteById(id);
+        assessmentRepository.deleteByUserId(id);
+        return ResponseEntity.ok("User deleted successfully!");
     }
 }

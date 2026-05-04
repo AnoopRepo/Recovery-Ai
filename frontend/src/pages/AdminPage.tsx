@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Users, Mail, Briefcase, ShieldCheck, Loader2, Search, Lock, LogOut } from 'lucide-react';
+import { Users, Mail, Briefcase, ShieldCheck, Loader2, Search, Lock, LogOut, Trash2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -40,6 +40,17 @@ const AdminPage = () => {
       setError('Failed to fetch users. Make sure the backend is running.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeleteUser = async (id: string, name: string) => {
+    if (window.confirm(`Are you sure you want to delete user "${name}"? This will also delete all their assessment records.`)) {
+      try {
+        await axios.delete(`${API_URL}/api/auth/users/${id}`);
+        setUsers(users.filter(u => u.id !== id));
+      } catch (err: any) {
+        alert('Failed to delete user. Please try again.');
+      }
     }
   };
 
@@ -192,6 +203,7 @@ const AdminPage = () => {
                     <th className="p-6 font-serif font-bold text-[var(--color-charcoal)]">Contact</th>
                     <th className="p-6 font-serif font-bold text-[var(--color-charcoal)]">Profession</th>
                     <th className="p-6 font-serif font-bold text-[var(--color-charcoal)]">Status</th>
+                    <th className="p-6 font-serif font-bold text-[var(--color-charcoal)]">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -227,6 +239,15 @@ const AdminPage = () => {
                         <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-50 text-green-600 text-xs font-bold uppercase tracking-wider border border-green-100">
                           Active
                         </span>
+                      </td>
+                      <td className="p-6 text-right">
+                        <button 
+                          onClick={() => handleDeleteUser(user.id, user.name)}
+                          className="p-3 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
+                          title="Delete User"
+                        >
+                          <Trash2 size={20} />
+                        </button>
                       </td>
                     </motion.tr>
                   ))}
