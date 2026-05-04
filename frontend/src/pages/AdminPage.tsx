@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import axios from 'axios';
+import { API_URL, ADMIN_EMAIL } from '../config';
 
 interface User {
   id: string;
@@ -22,8 +23,7 @@ const AdminPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
-  // Credentials are now hidden in .env
-  const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL || "anoopyadav5984@gmail.com";
+  // Credentials are now hidden in .env or config
   const MASTER_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || "Anoop@2003";
 
   const isAdminEmail = user?.email === ADMIN_EMAIL;
@@ -34,8 +34,7 @@ const AdminPage = () => {
 
   const fetchUsers = async () => {
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'https://recovery-ai-tper.onrender.com';
-      const response = await axios.get(`${apiUrl}/api/auth/users`);
+      const response = await axios.get(`${API_URL}/api/auth/users`);
       setUsers(response.data);
     } catch (err: any) {
       setError('Failed to fetch users. Make sure the backend is running.');

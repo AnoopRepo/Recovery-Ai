@@ -7,6 +7,7 @@ import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useAuth } from '../context/AuthContext';
+import { API_URL } from '../config';
 
 const professionQuestions: Record<string, { id: number, question: string, options: string[] }[]> = {
   'Student': [
@@ -119,8 +120,7 @@ const AssessmentPage = () => {
     try {
       const userContext = `User Name: ${user.name || 'User'}\nProfession: ${userProfession}\n\n`;
       const answersString = userContext + questions.map(q => `${q.question}: ${answers[q.id]}`).join('\n');
-      const apiUrl = import.meta.env.VITE_API_URL || 'https://recovery-ai-tper.onrender.com';
-      const response = await axios.post(`${apiUrl}/api/assessment/submit`, 
+      const response = await axios.post(`${API_URL}/api/assessment/submit`, 
         { answers: answersString },
         { headers: { Authorization: `Bearer ${token}` } }
       );

@@ -5,6 +5,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import { API_URL } from '../config';
 
 const DashboardPage = () => {
   const { token, isLoggedIn } = useAuth();
@@ -21,8 +22,7 @@ const DashboardPage = () => {
       }
 
       try {
-        const apiUrl = import.meta.env.VITE_API_URL || 'https://recovery-ai-tper.onrender.com';
-        const response = await axios.get(`${apiUrl}/api/assessment/history`, {
+        const response = await axios.get(`${API_URL}/api/assessment/history`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setHistory(response.data);

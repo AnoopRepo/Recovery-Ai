@@ -6,6 +6,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import { API_URL } from '../config';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -21,8 +22,7 @@ const LoginPage = () => {
     setError('');
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'https://recovery-ai-tper.onrender.com';
-      const response = await axios.post(`${apiUrl}/api/auth/signin`, {
+      const response = await axios.post(`${API_URL}/api/auth/signin`, {
         email,
         password
       });

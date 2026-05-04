@@ -5,6 +5,7 @@ import { UserPlus, Mail, Lock, User, Loader2, ArrowRight } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import axios from 'axios';
+import { API_URL } from '../config';
 
 const SignupPage = () => {
   const [name, setName] = useState('');
@@ -22,8 +23,7 @@ const SignupPage = () => {
     setError('');
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'https://recovery-ai-tper.onrender.com';
-      await axios.post(`${apiUrl}/api/auth/signup`, {
+      await axios.post(`${API_URL}/api/auth/signup`, {
         name,
         email,
         password,
