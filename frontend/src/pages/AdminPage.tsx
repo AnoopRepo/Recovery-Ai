@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Users, Mail, Briefcase, Calendar, ShieldCheck, Loader2, Search, Lock } from 'lucide-react';
+import { Users, Mail, Briefcase, ShieldCheck, Loader2, Search, Lock } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import axios from 'axios';

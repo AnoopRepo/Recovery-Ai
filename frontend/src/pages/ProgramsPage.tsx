@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Sparkles, Calendar, Zap, Brain, Moon, Coffee, Heart, CheckCircle2, ArrowRight } from 'lucide-react';
+import { Sparkles, Calendar, Zap, CheckCircle2, ArrowRight } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
@@ -111,7 +111,7 @@ const ProgramsPage = () => {
                 </h3>
                 
                 <div className="space-y-6">
-                  {program.days.map((day, dIndex) => (
+                  {program.days.map((day) => (
                     <div key={day.day} className="flex gap-4 group">
                       <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[var(--color-warm-white)] flex items-center justify-center text-xs font-bold text-[var(--color-muted)] group-hover:bg-[var(--color-sage)] group-hover:text-white transition-all">
                         {day.day}
