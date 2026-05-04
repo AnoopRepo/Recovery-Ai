@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Users, Mail, Briefcase, Calendar, ShieldCheck, Loader2, Search } from 'lucide-react';
+import { Users, Mail, Briefcase, Calendar, ShieldCheck, Loader2, Search, Lock } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import axios from 'axios';
@@ -19,21 +20,37 @@ const AdminPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
-  // SET YOUR ADMIN EMAIL HERE
-  const ADMIN_EMAIL = "anoopyadav5984@gmail.com"; 
+  // Credentials are now hidden in .env
+  const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL || ""; 
+  const MASTER_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || ""; 
 
   const user = JSON.parse(localStorage.getItem('user') || '{}');
-  const isAdmin = user.email === ADMIN_EMAIL;
+  const isAdminEmail = user.email === ADMIN_EMAIL;
+  
+  const [adminPassword, setAdminPassword] = useState('');
+  const [isPasswordCorrect, setIsPasswordCorrect] = useState(false);
+  const [passError, setPassError] = useState('');
 
   useEffect(() => {
-    if (!isAdmin) {
+    if (!isAdminEmail || !isPasswordCorrect) {
       setLoading(false);
       return;
     }
     fetchUsers();
-  }, [isAdmin]);
+  }, [isAdminEmail, isPasswordCorrect]);
 
-  if (!isAdmin) {
+  const handlePasswordSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (adminPassword === MASTER_PASSWORD) {
+      setIsPasswordCorrect(true);
+      setLoading(true);
+      fetchUsers();
+    } else {
+      setPassError('Incorrect Master Password');
+    }
+  };
+
+  if (!isAdminEmail) {
     return (
       <div className="font-sans bg-[var(--color-warm-white)] text-[var(--color-charcoal)] min-h-screen flex flex-col items-center justify-center p-6 text-center">
         <Navbar />
@@ -53,6 +70,41 @@ const AdminPage = () => {
           >
             Login as Admin
           </button>
+        </motion.div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!isPasswordCorrect) {
+    return (
+      <div className="font-sans bg-[var(--color-warm-white)] text-[var(--color-charcoal)] min-h-screen flex flex-col items-center justify-center p-6 text-center">
+        <Navbar />
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white p-12 rounded-[32px] shadow-2xl w-full max-w-md border border-[var(--color-cream)]"
+        >
+          <div className="w-16 h-16 bg-[var(--color-sage-light)]/20 rounded-2xl flex items-center justify-center text-[var(--color-sage)] mx-auto mb-6">
+            <Lock size={32} />
+          </div>
+          <h2 className="text-3xl font-serif font-bold mb-2">Admin Verification</h2>
+          <p className="text-[var(--color-muted)] mb-8">Enter the master password to access user data.</p>
+          
+          <form onSubmit={handlePasswordSubmit} className="flex flex-col gap-4">
+            <input 
+              type="password" 
+              placeholder="Master Password" 
+              value={adminPassword}
+              onChange={(e) => setAdminPassword(e.target.value)}
+              className="w-full bg-[var(--color-warm-white)] border-2 border-[var(--color-cream)] p-4 rounded-2xl outline-none focus:border-[var(--color-sage)] transition-all text-center text-xl tracking-widest"
+              autoFocus
+            />
+            {passError && <p className="text-red-500 text-sm font-medium">{passError}</p>}
+            <button className="bg-[var(--color-charcoal)] text-white p-4 rounded-2xl font-bold hover:bg-[var(--color-sage-dark)] transition-all shadow-lg">
+              Unlock Dashboard
+            </button>
+          </form>
         </motion.div>
         <Footer />
       </div>
