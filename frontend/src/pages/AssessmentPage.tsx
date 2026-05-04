@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { useAuth } from '../context/AuthContext';
 
 const professionQuestions: Record<string, { id: number, question: string, options: string[] }[]> = {
   'Student': [
@@ -83,8 +84,8 @@ const professionQuestions: Record<string, { id: number, question: string, option
 };
 
 const AssessmentPage = () => {
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
-  const userProfession = user.profession || 'Other';
+  const { user, token } = useAuth();
+  const userProfession = user?.profession || 'Other';
   const questions = professionQuestions[userProfession] || professionQuestions['Other'];
 
   const [currentStep, setCurrentStep] = useState(0);
@@ -109,7 +110,6 @@ const AssessmentPage = () => {
     setIsSubmitting(true);
     setError(null);
 
-    const token = localStorage.getItem('token');
     if (!token) {
       setError("You must be logged in to submit an assessment.");
       setIsSubmitting(false);
@@ -126,11 +126,15 @@ const AssessmentPage = () => {
       );
       setResult(response.data.analysis);
     } catch (err: any) {
-      const msg = err.response?.data?.message || err.response?.data || "Something went wrong. Please try again.";
-      if (typeof msg === 'string' && (msg.includes('429') || msg.includes('high demand') || msg.includes('rate'))) {
-        setError("⏳ The AI service is busy right now. Please wait 30 seconds and try again.");
+      if (!err.response) {
+        setError("Server connection failed. Please check if the backend is running.");
       } else {
-        setError(typeof msg === 'string' ? msg : "Something went wrong. Please try again.");
+        const msg = err.response?.data?.message || err.response?.data || "Something went wrong. Please try again.";
+        if (typeof msg === 'string' && (msg.includes('429') || msg.includes('high demand') || msg.includes('rate'))) {
+          setError("⏳ The AI service is busy right now. Please wait 30 seconds and try again.");
+        } else {
+          setError(typeof msg === 'string' ? msg : "Something went wrong. Please try again.");
+        }
       }
     } finally {
       setIsSubmitting(false);

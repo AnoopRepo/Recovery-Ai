@@ -4,15 +4,16 @@ import { History, Calendar, FileText, Sparkles, Loader2, ArrowRight } from 'luci
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
 
 const DashboardPage = () => {
+  const { token, isLoggedIn } = useAuth();
   const [history, setHistory] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchHistory = async () => {
-      const token = localStorage.getItem('token');
       if (!token) {
         setError('You must be logged in to view your history.');
         setLoading(false);
@@ -20,19 +21,28 @@ const DashboardPage = () => {
       }
 
       try {
-        const response = await axios.get('http://localhost:8080/api/assessment/history', {
+        const apiUrl = import.meta.env.VITE_API_URL || 'https://recovery-ai-tper.onrender.com';
+        const response = await axios.get(`${apiUrl}/api/assessment/history`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setHistory(response.data);
       } catch (err: any) {
-        setError('Failed to fetch history. Please try again later.');
+        if (!err.response) {
+          setError('Server connection failed. Please check if the backend is running.');
+        } else {
+          setError('Failed to fetch history. Please try again later.');
+        }
       } finally {
         setLoading(false);
       }
     };
 
-    fetchHistory();
-  }, []);
+    if (isLoggedIn) {
+      fetchHistory();
+    } else {
+      setLoading(false);
+    }
+  }, [token, isLoggedIn]);
 
   return (
     <div className="font-sans bg-[var(--color-warm-white)] text-[var(--color-charcoal)] min-h-screen flex flex-col">
@@ -64,7 +74,7 @@ const DashboardPage = () => {
         ) : error ? (
           <div className="bg-red-50 border border-red-100 p-8 rounded-3xl text-center">
             <p className="text-red-600 font-medium mb-4">{error}</p>
-            {!localStorage.getItem('token') && (
+            {!isLoggedIn && (
               <button 
                 onClick={() => window.location.href = '/login'}
                 className="bg-[var(--color-charcoal)] text-white px-6 py-2 rounded-full font-bold"

@@ -5,6 +5,7 @@ import { LogIn, Mail, Lock, Loader2, ArrowRight } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -12,6 +13,7 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,18 +26,26 @@ const LoginPage = () => {
         email,
         password
       });
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify({ 
+      
+      login(response.data.token, {
         email: response.data.email, 
         id: response.data.id,
         name: response.data.name,
         profession: response.data.profession 
-      }));
+      });
       
-      // Redirect to home page as requested
-      navigate('/');
+      // Redirect to admin if it's the admin user, otherwise to home
+      if (response.data.email === (import.meta.env.VITE_ADMIN_EMAIL || "anoopyadav5984@gmail.com")) {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Invalid email or password');
+      if (!err.response) {
+        setError('Server connection failed. Please check if the backend is running.');
+      } else {
+        setError(err.response?.data?.message || 'Invalid email or password');
+      }
     } finally {
       setLoading(false);
     }

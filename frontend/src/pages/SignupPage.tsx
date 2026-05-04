@@ -13,6 +13,7 @@ const SignupPage = () => {
   const [profession, setProfession] = useState('Other');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -28,10 +29,15 @@ const SignupPage = () => {
         password,
         profession
       });
-      // After successful signup, redirect to login
-      navigate('/login');
+      setSuccess(true);
+      // After successful signup, redirect to login after a short delay to show success message
+      setTimeout(() => navigate('/login'), 2000);
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+      if (!err.response) {
+        setError('Server connection failed. Please check if the backend is running.');
+      } else {
+        setError(err.response?.data?.message || 'Registration failed. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
@@ -118,6 +124,7 @@ const SignupPage = () => {
             </div>
 
             {error && <p className="text-red-500 text-sm font-medium text-center">{error}</p>}
+            {success && <p className="text-green-500 text-sm font-medium text-center">Account created! Redirecting to login...</p>}
 
             <button 
               disabled={loading}

@@ -94,8 +94,8 @@ const LandingPage = () => {
               </div>
             </div>
             <div className="flex gap-1.5">
-              {['M','T','W','T','F','S'].map(d => (
-                <div key={d} className="flex-1 h-8 bg-[var(--color-sage-dark)] rounded-lg flex items-center justify-center text-[11px] text-white font-semibold">{d}</div>
+              {['M','T','W','T','F','S'].map((d, i) => (
+                <div key={`${d}-${i}`} className="flex-1 h-8 bg-[var(--color-sage-dark)] rounded-lg flex items-center justify-center text-[11px] text-white font-semibold">{d}</div>
               ))}
               <div className="flex-1 h-8 bg-[#7C9E8A]/15 rounded-lg flex items-center justify-center text-[11px] text-[var(--color-muted)] font-semibold">S</div>
             </div>

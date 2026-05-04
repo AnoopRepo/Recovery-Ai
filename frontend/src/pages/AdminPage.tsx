@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Users, Mail, Briefcase, ShieldCheck, Loader2, Search, Lock } from 'lucide-react';
+import { Users, Mail, Briefcase, ShieldCheck, Loader2, Search, Lock, LogOut } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import axios from 'axios';
@@ -14,6 +15,7 @@ interface User {
 }
 
 const AdminPage = () => {
+  const { user, logout } = useAuth();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -21,15 +23,26 @@ const AdminPage = () => {
   const navigate = useNavigate();
 
   // Credentials are now hidden in .env
-  const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL || ""; 
-  const MASTER_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || ""; 
+  const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL || "anoopyadav5984@gmail.com";
+  const MASTER_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || "Anoop@2003";
 
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
-  const isAdminEmail = user.email === ADMIN_EMAIL;
+  const isAdminEmail = user?.email === ADMIN_EMAIL;
   
   const [adminPassword, setAdminPassword] = useState('');
   const [isPasswordCorrect, setIsPasswordCorrect] = useState(false);
   const [passError, setPassError] = useState('');
+
+  const fetchUsers = async () => {
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://recovery-ai-tper.onrender.com';
+      const response = await axios.get(`${apiUrl}/api/auth/users`);
+      setUsers(response.data);
+    } catch (err: any) {
+      setError('Failed to fetch users. Make sure the backend is running.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!isAdminEmail || !isPasswordCorrect) {
@@ -111,17 +124,6 @@ const AdminPage = () => {
     );
   }
 
-  const fetchUsers = async () => {
-    try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'https://recovery-ai-tper.onrender.com';
-      const response = await axios.get(`${apiUrl}/api/auth/users`);
-      setUsers(response.data);
-    } catch (err: any) {
-      setError('Failed to fetch users. Make sure the backend is running.');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const filteredUsers = users.filter(user => 
     user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -145,7 +147,7 @@ const AdminPage = () => {
             <p className="text-[var(--color-muted)]">Manage users and monitor platform growth.</p>
           </div>
 
-          <div className="relative w-full md:w-96">
+          <div className="relative w-full md:w-96 flex gap-2">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-muted)]" size={20} />
             <input 
               type="text" 
@@ -154,6 +156,15 @@ const AdminPage = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full bg-white border-2 border-[var(--color-cream)] p-4 pl-12 rounded-2xl outline-none focus:border-[var(--color-sage)] transition-all shadow-sm"
             />
+            <button 
+              onClick={() => {
+                logout();
+                navigate('/login');
+              }}
+              className="flex items-center gap-2 px-4 py-2 rounded-2xl text-red-500 font-bold hover:bg-red-50 transition-colors"
+            >
+              <LogOut size={18} />
+            </button>
           </div>
         </div>
 
