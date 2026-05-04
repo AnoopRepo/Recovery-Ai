@@ -21,8 +21,18 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-[100] bg-[#FDFAF5]/85 backdrop-blur-md border-b border-[#7C9E8A]/15">
       <div className="flex items-center justify-between px-6 md:px-12 py-4 md:py-5">
-        <div className="font-serif text-[20px] md:text-[22px] font-bold text-[#4A7060] tracking-tight">
-          <Link to="/">re<span className="text-[#D4856A] italic">charge</span></Link>
+        <div className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" className="w-8 h-8">
+              <circle cx="24" cy="24" r="22" fill="#4A7060" opacity="0.12"/>
+              <path d="M16 20c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="#4A7060" strokeWidth="2.2" strokeLinecap="round"/>
+              <path d="M24 32s-7-4.5-7-9a4 4 0 0 1 7-2.65A4 4 0 0 1 31 23c0 4.5-7 9-7 9z" fill="#D4856A"/>
+              <path d="M10 28h4l2-4 4 8 3-5 2 3h5" stroke="#4A7060" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <span className="font-serif text-[18px] md:text-[20px] font-bold text-[#4A7060] tracking-tight">
+              Mind<span className="text-[#D4856A] italic">Heal</span> <span className="text-[12px] font-semibold bg-[#4A7060]/10 text-[#4A7060] px-1.5 py-0.5 rounded-md ml-0.5 not-italic">AI</span>
+            </span>
+          </Link>
         </div>
 
         {/* Desktop Links */}

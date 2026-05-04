@@ -15,13 +15,13 @@ const LandingPage = () => {
         <div className="relative z-10 max-w-[580px] w-full lg:w-1/2 text-center lg:text-left mb-16 lg:mb-0">
           <div className="inline-flex items-center gap-2 bg-[rgba(124,158,138,0.12)] border border-[rgba(124,158,138,0.3)] px-4 py-1.5 rounded-full mb-8 text-[12px] font-semibold text-[var(--color-sage-dark)] uppercase tracking-wide animate-fade-up">
             <span className="w-1.5 h-1.5 bg-[var(--color-sage)] rounded-full animate-blink"></span>
-            🌿 Science-backed recovery
+            🧠 AI-Powered Mental Health Recovery
           </div>
           <h1 className="font-serif text-[clamp(36px,5vw,68px)] leading-[1.1] font-bold text-[var(--color-charcoal)] mb-6 animate-fade-up" style={{ animationDelay: '0.1s' }}>
-            Heal your mind from <em className="text-[var(--color-sage-dark)] italic">digital</em> <span className="text-[var(--color-accent)]">burnout</span>
+            Reclaim your mind with <em className="text-[var(--color-sage-dark)] italic">Mental Health</em> <span className="text-[#D4856A]">Recovery AI</span>
           </h1>
           <p className="text-[16px] md:text-[18px] leading-[1.7] text-[var(--color-muted)] font-light mb-10 animate-fade-up" style={{ animationDelay: '0.2s' }}>
-            A structured 30-day recovery platform that helps you reclaim your focus, sleep better, and build healthier screen habits — one day at a time.
+            An AI-powered 30-day mental wellness program that helps you understand your burnout, build resilience, and reclaim your peace of mind — one day at a time.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-center lg:justify-start animate-fade-up" style={{ animationDelay: '0.3s' }}>
             <Link to="/assessment" className="w-full sm:w-auto bg-[var(--color-sage-dark)] text-white px-9 py-4 rounded-full text-[16px] font-semibold hover:bg-[var(--color-sage)] transition-all hover:-translate-y-0.5 shadow-[0_8px_32px_rgba(74,112,96,0.3)] hover:shadow-[0_12px_40px_rgba(74,112,96,0.4)]">

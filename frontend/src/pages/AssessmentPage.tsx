@@ -89,7 +89,12 @@ const AssessmentPage = () => {
       );
       setResult(response.data.analysis);
     } catch (err: any) {
-      setError(err.response?.data?.message || "Something went wrong. Please try again.");
+      const msg = err.response?.data?.message || err.response?.data || "Something went wrong. Please try again.";
+      if (typeof msg === 'string' && (msg.includes('429') || msg.includes('high demand') || msg.includes('rate'))) {
+        setError("⏳ The AI service is busy right now. Please wait 30 seconds and try again.");
+      } else {
+        setError(typeof msg === 'string' ? msg : "Something went wrong. Please try again.");
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -248,6 +253,19 @@ const AssessmentPage = () => {
                 className="bg-[var(--color-charcoal)] text-white px-8 py-4 rounded-full font-bold hover:bg-[var(--color-sage-dark)] transition-all shadow-lg"
               >
                 Go to Dashboard
+              </button>
+              <button 
+                onClick={() => {
+                  const element = document.createElement("a");
+                  const file = new Blob([result || ""], {type: 'text/markdown'});
+                  element.href = URL.createObjectURL(file);
+                  element.download = "Recovery_Report.md";
+                  document.body.appendChild(element);
+                  element.click();
+                }}
+                className="bg-[var(--color-sage)] text-white px-8 py-4 rounded-full font-bold hover:bg-[var(--color-sage-dark)] transition-all shadow-lg"
+              >
+                Download Detailed Report
               </button>
               <button 
                 onClick={() => { setResult(null); setCurrentStep(0); setAnswers({}); }}
