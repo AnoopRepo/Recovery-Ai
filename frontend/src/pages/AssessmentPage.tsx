@@ -118,7 +118,8 @@ const AssessmentPage = () => {
     }
 
     try {
-      const userContext = `User Name: ${user.name || 'User'}\nProfession: ${userProfession}\n\n`;
+      const userName = user?.name || 'User';
+      const userContext = `User Name: ${userName}\nProfession: ${userProfession}\n\n`;
       const answersString = userContext + questions.map(q => `${q.question}: ${answers[q.id]}`).join('\n');
       const response = await axios.post(`${API_URL}/api/assessment/submit`, 
         { answers: answersString },
