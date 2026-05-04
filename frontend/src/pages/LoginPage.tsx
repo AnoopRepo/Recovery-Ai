@@ -31,7 +31,9 @@ const LoginPage = () => {
         name: response.data.name,
         profession: response.data.profession 
       }));
-      navigate('/assessment');
+      
+      // Redirect to home page as requested
+      navigate('/');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Invalid email or password');
     } finally {

@@ -42,7 +42,7 @@ const Navbar = () => {
             <li><Link to="/dashboard" className="text-[#7A7A72] text-[14px] font-medium transition-colors hover:text-[#4A7060] flex items-center gap-1"><LayoutDashboard size={16} /> Dashboard</Link></li>
           )}
           <li><a href="#how-it-works" className="text-[#7A7A72] text-[14px] font-medium transition-colors hover:text-[#4A7060]">How it works</a></li>
-          <li><a href="#programs" className="text-[#7A7A72] text-[14px] font-medium transition-colors hover:text-[#4A7060]">Programs</a></li>
+          <li><Link to="/programs" className="text-[#7A7A72] text-[14px] font-medium transition-colors hover:text-[#4A7060]">Programs</Link></li>
         </ul>
 
         <div className="flex items-center gap-4">
